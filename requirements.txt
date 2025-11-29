@@ -4,3 +4,7 @@ selenium
 pandas
 webdriver-manager
 undetected-chromedriver
+seaborn
+matplotlib
+wordcloud
+nltk
