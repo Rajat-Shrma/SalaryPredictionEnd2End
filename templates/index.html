@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Salary Prediction</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 2rem; }
+            label { display:block; margin-top: 0.5rem; }
+            .row { display:flex; gap:1rem; }
+            .col { flex:1; }
+            .skills { display:flex; gap:1rem; flex-wrap:wrap; }
+            .result { margin-top: 1rem; padding: 1rem; background:#f3f3f3; }
+            input[type=text], input[type=number], select { width: 320px; padding:6px }
+        </style>
+    </head>
+    <body>
+        <h1>Salary Prediction</h1>
+        <form method="post" action="/predict">
+            {% for f in features %}
+                {% if f in skill_flags %}
+                    <label>
+                        <input type="checkbox" name="{{ f }}" {% if input_data and input_data.get(f) %}checked{% endif %}>
+                        {{ f }}
+                    </label>
+                {% else %}
+                    <label for="{{ f }}">{{ f }}:</label>
+                    <input type="text" name="{{ f }}" id="{{ f }}" value="{% if input_data and input_data.get(f) is not none %}{{ input_data.get(f) }}{% endif %}">
+                {% endif %}
+            {% endfor %}
+
+            <div style="margin-top:1rem;">
+                <button type="submit">Predict</button>
+            </div>
+        </form>
+
+        {% if prediction is not none %}
+            <div class="result">
+                <strong>Prediction:</strong>
+                {% if prediction is string %}
+                    <div>{{ prediction }}</div>
+                {% else %}
+                    <div>${{ '%.2f'|format(prediction) }}</div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <p style="margin-top:1rem;color:#666">If you see "Model file not found" make sure `MODEL_PATH` in <code>app.py</code> points to your saved model.</p>
+    </body>
+</html>

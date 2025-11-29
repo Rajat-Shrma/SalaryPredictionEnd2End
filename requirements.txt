@@ -10,3 +10,4 @@ wordcloud
 nltk
 scikit-learn
 statsmodels
+flask
